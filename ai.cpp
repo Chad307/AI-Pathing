@@ -36,6 +36,9 @@ int AI::path(int eval_type)
 	int goalJ = 0;
 	int nextI = 0;
 	int nextJ = 0;
+	int nextCost = 0;
+
+	std::vector<int[2]> fringe = new std::vector();
 
 	//Find initial node.
 	for (int i = 0; i < grid.size(); i++){
@@ -53,58 +56,114 @@ int AI::path(int eval_type)
 		}
 	}
 
-	while ()
+	while (gird[currI][currJ].state != "g")
 	{
 		//Check the four directions.
 		//Up
-		if ((currI - 1) >= 0 && isPathable(grid[currI - 1][currJ].state))
+		if ((currI - 1) >= 0 && isPathable(grid[currI - 1][currJ].state) 
+			&& !grid[currI - 1][currJ].visited)
 		{
 			if (!grid[currI - 1][currJ].evaluated){
 				grid[currI - 1][currJ].value = evaluate(currI - 1, currJ, goalI, goalJ);
 			}
 			nextI = currI - 1;
 			nextJ = currJ;
+
+			if (!fringeContains(fringe, currI - 1, currJ))
+			{
+				fringe.push_back({currI - 1, currJ})
+			}
 		}
 
 		//Down
-		if ((currI + 1) <= (dimension - 1) && isPathable(grid[currI + 1][currJ].state))
+		if ((currI + 1) <= (dimension - 1) && isPathable(grid[currI + 1][currJ].state) 
+			&& !grid[currI + 1][currJ].visited)
 		{
 			if (!grid[currI + 1][currJ].evaluated){
 				grid[currI + 1][currJ].value = evaluate(currI + 1, currJ, goalI, goalJ);
 			}
-			if (grid[currI + 1][currJ].value < grid[currI - 1][currJ].value){
-				nextI = currI + 1;
-				nextJ = currJ;
+			// if (grid[currI + 1][currJ].value < grid[currI - 1][currJ].value){
+			// 	nextI = currI + 1;
+			// 	nextJ = currJ;
+			// }
+
+			if (!fringeContains(fringe, currI + 1, currJ))
+			{
+				fringe.push_back({currI + 1, currJ})
 			}
 		}
 
 		//Left
-		if ((currJ - 1) >= 0 && isPathable(grid[currI][currJ - 1].state))
+		if ((currJ - 1) >= 0 && isPathable(grid[currI][currJ - 1].state) 
+			&& !grid[currI][currJ - 1].visited)
 		{
 			if (!grid[currI][currJ - 1].evaluated){
 				grid[currI][currJ - 1].value = evaluate(currI, currJ - 1, goalI, goalJ);
 			}
-			if (grid[currI][currJ - 1].value < grid[currI + 1][currJ].value){
-				nextI = currI;
-				nextJ = currJ - 1;
-			}
+			// if (grid[currI][currJ - 1].value < grid[currI + 1][currJ].value){
+			// 	nextI = currI;
+			// 	nextJ = currJ - 1;
+			// }
 
+			if (!fringeContains(fringe, currI, currJ - 1))
+			{
+				fringe.push_back({currI, currJ - 1})
+			}
 		}
 
 		//Right
-		if ((currJ + 1) <= (dimension - 1) && isPathable(grid[currI][currJ + 1].state))
+		if ((currJ + 1) <= (dimension - 1) && isPathable(grid[currI][currJ + 1].state) 
+			&& !grid[currI][currJ + 1].visited)
 		{
 			if (!grid[currI][currJ + 1].evaluated){
 				grid[currI][currJ + 1].value = evaluate(currI, currJ + 1, goalI, goalJ);
 			}
-			if (grid[currI][currJ + 1].value < grid[currI][currJ - 1].value){
-				nextI = currI;
-				nextJ = currJ + 1;
+			// if (grid[currI][currJ + 1].value < grid[currI][currJ - 1].value){
+			// 	nextI = currI;
+			// 	nextJ = currJ + 1;
+			// }
+
+			if (!fringeContains(fringe, currI, currJ + 1))
+			{
+				fringe.push_back({currI, currJ + 1})
 			}
 		}
 
+		//Choose node with smallest cost in fringe
+		for (int i = 0; i < fringe.size(); i++)
+		{
+			if (i = 0)
+			{
+				nextCost = grid[fringe[0][0]][fringe[0][1]].value;
+				nextI = fringe[0][0];
+				nextJ = fringe[0][1];
+			}
+			else if (grid[fringe[i][0]][fringe[i][1]].value < nextCost)
+			{
+				nextCost = grid[fringe[i][0]][fringe[i][1]].value;
+				nextI = fringe[i][0];
+				nextJ = fringe[i][1];
+			}
+		}
 
+		//Remove next node from fringe
+		for (int i = 0; i < fringe.size(); i++)
+		{
+			if (fringe[i][0] == nextI && fringe[i][1] == nextJ){
+				fringe.erase(fringe.begin() + i);
+			}
+		}
 
+		//Set next node's prevCoords to curr coords
+		grid[nextI][nextJ].prevCoords[0] = currI;
+		grid[nextI][nextJ].prevCoords[1] = currJ;
+
+		//Set curr node visited to true
+		grid[currI][currJ].visited = true;
+
+		//Move to next node
+		currI = nextI;
+		currJ = nextJ;
 
 
 	}
@@ -158,4 +217,16 @@ bool AI::isPathable(char state)
 	{
 		return true;
 	}
+}
+
+bool AI::fringeContains(std::vector<int[2]> fringe, int i, int j)
+{
+	for (int i = 0; i < fringe.size(); i++)
+	{
+		if (fringe[0][0] == i && fringe[0][1] == j)
+		{
+			return true;
+		}
+	}
+	return false;
 }

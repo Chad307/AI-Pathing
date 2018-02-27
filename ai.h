@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <vector>
 
 class AI
 {
@@ -24,13 +25,14 @@ class AI
 		int path(int eval_type);
 
 	private:
-		struct Node {char state; int value; bool evaluated = false; int prevCoords[2];};
+		struct Node {char state; int value; bool evaluated = false; bool visited = false; int prevCoords[2];};
 		void get_grid(std::string fileName);
 		int euclidean_evaluation(int i0, int j0, int i1, int j1);
 		int manhattan_evaluation(int i0, int j0, int i1, int j1);
 		int hueristic_euclidean_evaluation(int i0, int j0, int i1, int j1);
 		int hueristic_manhattan_evaluation(int i0, int j0, int i1, int j1);
 		bool isPathable(char state);
+		bool fringeContains(std::vector<int[2]> fringe, int i, int j);
 
 		//GridReader reader;
 		struct Node** grid;
