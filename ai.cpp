@@ -7,7 +7,7 @@
 
 #include "ai.h"
 
-int AI::path(int eval_type)
+void AI::path(int eval_type)
 {
 	int (*evaluate) (int, int, int, int);
 
@@ -30,13 +30,13 @@ int AI::path(int eval_type)
 			break;
 	}
 
-	int currI = 0;
-	int currJ = 0;
-	int goalI = 0;
-	int goalJ = 0;
-	int nextI = 0;
-	int nextJ = 0;
-	int nextCost = 0;
+	int curr_i = 0;
+	int curr_j = 0;
+	int goal_i = 0;
+	int goal_j = 0;
+	int next_i = 0;
+	int next_j = 0;
+	int next_cost = 0;
 
 	std::vector<int[2]> fringe = new std::vector();
 
@@ -45,128 +45,137 @@ int AI::path(int eval_type)
 		for (int j = 0; j < grid[0].size(); i++){
 			if (grid[i][j].state == "i")
 			{
-				currI = i;
-				currJ = j;
+				curr_i = i;
+				curr_j = j;
 			}
 			else if (grid[i][j].state == "g")
 			{
-				goalI = i;
-				goalJ = j;
+				goal_i = i;
+				goal_j = j;
 			}
 		}
 	}
 
-	while (gird[currI][currJ].state != "g")
+	while (gird[curr_i][curr_j].state != "g")
 	{
 		//Check the four directions.
 		//Up
-		if ((currI - 1) >= 0 && isPathable(grid[currI - 1][currJ].state) 
-			&& !grid[currI - 1][currJ].visited)
+		if ((curr_i - 1) >= 0 && is_pathable(grid[curr_i - 1][curr_j].state) 
+			&& !grid[curr_i - 1][curr_j].visited)
 		{
-			if (!grid[currI - 1][currJ].evaluated){
-				grid[currI - 1][currJ].value = evaluate(currI - 1, currJ, goalI, goalJ);
+			if (!grid[curr_i - 1][curr_j].evaluated){
+				grid[curr_i - 1][curr_j].value = evaluate(curr_i - 1, curr_j, goal_i, goal_j);
+				grid[curr_i - 1][curr_j].depth = path_depth + 1;
+				grid[curr_i - 1][curr_j].evaluated = true;
 			}
-			nextI = currI - 1;
-			nextJ = currJ;
 
-			if (!fringeContains(fringe, currI - 1, currJ))
+			if (!fringe_contains(fringe, curr_i - 1, curr_j))
 			{
-				fringe.push_back({currI - 1, currJ})
+				fringe.push_back({curr_i - 1, curr_j})
 			}
 		}
 
 		//Down
-		if ((currI + 1) <= (dimension - 1) && isPathable(grid[currI + 1][currJ].state) 
-			&& !grid[currI + 1][currJ].visited)
+		if ((curr_i + 1) <= (dimension - 1) && is_pathable(grid[curr_i + 1][curr_j].state) 
+			&& !grid[curr_i + 1][curr_j].visited)
 		{
-			if (!grid[currI + 1][currJ].evaluated){
-				grid[currI + 1][currJ].value = evaluate(currI + 1, currJ, goalI, goalJ);
+			if (!grid[curr_i + 1][curr_j].evaluated){
+				grid[curr_i + 1][curr_j].value = evaluate(curr_i + 1, curr_j, goal_i, goal_j);
+				grid[curr_i + 1][curr_j].depth = path_depth + 1;
+				grid[curr_i + 1][curr_j].evaluated = true;
 			}
-			// if (grid[currI + 1][currJ].value < grid[currI - 1][currJ].value){
-			// 	nextI = currI + 1;
-			// 	nextJ = currJ;
-			// }
 
-			if (!fringeContains(fringe, currI + 1, currJ))
+			if (!fringe_contains(fringe, curr_i + 1, curr_j))
 			{
-				fringe.push_back({currI + 1, currJ})
+				fringe.push_back({curr_i + 1, curr_j})
 			}
 		}
 
 		//Left
-		if ((currJ - 1) >= 0 && isPathable(grid[currI][currJ - 1].state) 
-			&& !grid[currI][currJ - 1].visited)
+		if ((curr_j - 1) >= 0 && is_pathable(grid[curr_i][curr_j - 1].state) 
+			&& !grid[curr_i][curr_j - 1].visited)
 		{
-			if (!grid[currI][currJ - 1].evaluated){
-				grid[currI][currJ - 1].value = evaluate(currI, currJ - 1, goalI, goalJ);
+			if (!grid[curr_i][curr_j - 1].evaluated){
+				grid[curr_i][curr_j - 1].value = evaluate(curr_i, curr_j - 1, goal_i, goal_j);
+				grid[curr_i][curr_j - 1].depth = path_depth + 1;
+				grid[curr_i][curr_j - 1].evaluated = true;
 			}
-			// if (grid[currI][currJ - 1].value < grid[currI + 1][currJ].value){
-			// 	nextI = currI;
-			// 	nextJ = currJ - 1;
-			// }
 
-			if (!fringeContains(fringe, currI, currJ - 1))
+			if (!fringe_contains(fringe, curr_i, curr_j - 1))
 			{
-				fringe.push_back({currI, currJ - 1})
+				fringe.push_back({curr_i, curr_j - 1})
 			}
 		}
 
 		//Right
-		if ((currJ + 1) <= (dimension - 1) && isPathable(grid[currI][currJ + 1].state) 
-			&& !grid[currI][currJ + 1].visited)
+		if ((curr_j + 1) <= (dimension - 1) && is_pathable(grid[curr_i][curr_j + 1].state) 
+			&& !grid[curr_i][curr_j + 1].visited)
 		{
-			if (!grid[currI][currJ + 1].evaluated){
-				grid[currI][currJ + 1].value = evaluate(currI, currJ + 1, goalI, goalJ);
+			if (!grid[curr_i][curr_j + 1].evaluated){
+				grid[curr_i][curr_j + 1].value = evaluate(curr_i, curr_j + 1, goal_i, goal_j);
+				grid[curr_i][curr_j + 1].depth = path_depth + 1;
+				grid[curr_i][curr_j + 1].evaluated = true;
 			}
-			// if (grid[currI][currJ + 1].value < grid[currI][currJ - 1].value){
-			// 	nextI = currI;
-			// 	nextJ = currJ + 1;
-			// }
 
-			if (!fringeContains(fringe, currI, currJ + 1))
+			if (!fringe_contains(fringe, curr_i, curr_j + 1))
 			{
-				fringe.push_back({currI, currJ + 1})
+				fringe.push_back({curr_i, curr_j + 1})
 			}
 		}
 
 		//Choose node with smallest cost in fringe
 		for (int i = 0; i < fringe.size(); i++)
 		{
-			if (i = 0)
+			if (i == 0)
 			{
-				nextCost = grid[fringe[0][0]][fringe[0][1]].value;
-				nextI = fringe[0][0];
-				nextJ = fringe[0][1];
+				next_cost = grid[fringe[0][0]][fringe[0][1]].value;
+				next_i = fringe[0][0];
+				next_j = fringe[0][1];
 			}
-			else if (grid[fringe[i][0]][fringe[i][1]].value < nextCost)
+			else if (grid[fringe[i][0]][fringe[i][1]].value < next_cost)
 			{
-				nextCost = grid[fringe[i][0]][fringe[i][1]].value;
-				nextI = fringe[i][0];
-				nextJ = fringe[i][1];
+				next_cost = grid[fringe[i][0]][fringe[i][1]].value;
+				next_i = fringe[i][0];
+				next_j = fringe[i][1];
 			}
 		}
 
 		//Remove next node from fringe
 		for (int i = 0; i < fringe.size(); i++)
 		{
-			if (fringe[i][0] == nextI && fringe[i][1] == nextJ){
+			if (fringe[i][0] == next_i && fringe[i][1] == next_j){
 				fringe.erase(fringe.begin() + i);
 			}
 		}
 
 		//Set next node's prevCoords to curr coords
-		grid[nextI][nextJ].prevCoords[0] = currI;
-		grid[nextI][nextJ].prevCoords[1] = currJ;
+		grid[next_i][next_j].prevCoords[0] = curr_i;
+		grid[next_i][next_j].prevCoords[1] = curr_j;
 
 		//Set curr node visited to true
-		grid[currI][currJ].visited = true;
+		grid[curr_i][curr_j].visited = true;
 
 		//Move to next node
-		currI = nextI;
-		currJ = nextJ;
+		curr_i = next_i;
+		curr_j = next_j;
 
-
+		//Set path_depth
+		path_depth = grid[curr_i][curr_j].path_depth;
 	}
+
+	//Goal found
+	//Retrace path
+	while (grid[curr_i][curr_j].state != "i")
+	{
+		if (grid[curr_i][curr_j].state != "g")
+		{
+			path.push_back({curr_i, curr_j});
+		}
+		curr_i = grid[curr_i][curr_j].prevCoords[0];
+		curr_j = grid[curr_i][curr_j].prevCoords[1];
+	}
+
+	//Path stored
 }
 
 void AI::get_grid(std::string fileName)
@@ -198,16 +207,16 @@ int AI::manhattan_evaluation()
 
 int AI::hueristic_euclidean_evaluation(int i0, int j0, int i1, int j1)
 {
-	return currPathCost + euclidean_evaluation(i0, i1, j0, j1);
+	return path_depth + euclidean_evaluation(i0, i1, j0, j1);
 }
 
 int AI::hueristic_manhattan_evaluation(int i0, int j0, int i1, int j1)
 {
-	return currPathCost + manahttan_evaluation(i0, i1, j0, j1);
+	return path_depth + manahttan_evaluation(i0, i1, j0, j1);
 }
 
 
-bool AI::isPathable(char state)
+bool AI::is_pathable(char state)
 {
 	if (state == '+')
 	{
@@ -219,11 +228,11 @@ bool AI::isPathable(char state)
 	}
 }
 
-bool AI::fringeContains(std::vector<int[2]> fringe, int i, int j)
+bool AI::fringe_contains(std::vector<int[2]> fringe, int node_i, int node_i)
 {
 	for (int i = 0; i < fringe.size(); i++)
 	{
-		if (fringe[0][0] == i && fringe[0][1] == j)
+		if (fringe[i][0] == node_i && fringe[j][1] == node_j)
 		{
 			return true;
 		}
