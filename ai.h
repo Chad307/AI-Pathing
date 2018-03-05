@@ -18,27 +18,28 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
+#include <stdlib.h> 
 
 class AI
 {
 	public:
-		void path(int eval_type);
+		void find_path(int eval_type);
 
 	private:
-		struct Node {char state; int value; int depth; bool evaluated = false; bool visited = false; int prev_coords[2];};
+		struct Node {char state; int value; int depth; bool evaluated; bool visited; int prev_coords[2];};
 		void get_grid(std::string file_name);
 		int euclidean_evaluation(int i0, int j0, int i1, int j1);
 		int manhattan_evaluation(int i0, int j0, int i1, int j1);
 		int hueristic_euclidean_evaluation(int i0, int j0, int i1, int j1);
 		int hueristic_manhattan_evaluation(int i0, int j0, int i1, int j1);
 		bool is_pathable(char state);
-		bool fringe_contains(std::vector<int[2]> fringe, int node_i, int node_j);
+		bool fringe_contains(std::vector<std::vector<int> > fringe, int node_i, int node_j);
 
 		//GridReader reader;
 		struct Node** grid;
 		int dimension;
 		int path_depth;
-		std::vector<int[2]> path;
+		std::vector<std::vector<int> > path;
 };
 
 #endif /* AI_H */
