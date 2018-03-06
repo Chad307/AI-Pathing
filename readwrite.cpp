@@ -7,7 +7,7 @@ char** ReadWrite::readFile(std::string filename) {
 
 	getline(infile, line);
 	n = stoi(line);
-	cout << n << endl;
+	//cout << n << endl;
 
 	int i = 0;
 
@@ -36,4 +36,26 @@ char** ReadWrite::readFile(std::string filename) {
 }
 int ReadWrite::sizeOf() {
 	return n;
+}
+void ReadWrite::writeFile(char** arr, int n, int p) {
+
+	ofstream outputFile("outputFile.txt");
+	char** output_grid = new char*[n];
+	for (int i = 0; i < n; i++)
+	{
+		output_grid[i] = new char[n];
+		for (int j = 0; j < n; j++) {
+			output_grid[i][j] = arr[i][j];
+			outputFile << arr[i][j];
+			cout << arr[i][j];
+		}
+		outputFile << endl;
+		printf("\n");
+
+	}
+	outputFile << "PathCost:"<<p<<endl;
+	printf("Path cost: %d\n\n", p);
+	outputFile.close();
+
+	return;
 }

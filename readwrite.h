@@ -1,3 +1,4 @@
+
 #ifndef ReadWrite_H
 #define ReadWrite_H
 
@@ -12,6 +13,7 @@ class ReadWrite
 public:
 	char** readFile(std::string filename);
 	int sizeOf();
+	void writeFile(char** arr, int n, int p);
 private:
 	int n;
 };

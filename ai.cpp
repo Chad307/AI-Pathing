@@ -7,16 +7,16 @@ void AI::find_path(int eval_type)
 	evaluate = &AI::euclidean_evaluation;
 	switch (eval_type)
 	{
-	case 0:
+	case 1:
 		evaluate = &AI::euclidean_evaluation;
 		break;
-	case 1:
+	case 2:
 		evaluate = &AI::manhattan_evaluation;
 		break;
-	case 2:
+	case 3:
 		evaluate = &AI::hueristic_euclidean_evaluation;
 		break;
-	case 3:
+	case 4:
 		evaluate = &AI::hueristic_manhattan_evaluation;
 		break;
 	default:
@@ -54,10 +54,6 @@ void AI::find_path(int eval_type)
 
 	while (grid[curr_i][curr_j].state != 'g')
 	{
-
-		/*std::cout << curr_i;
-		std::cout << curr_j;
-		std::cout << ",";*/
 		//Check the four directions.
 		//Up
 		if ((curr_i - 1) >= 0 && is_pathable(grid[curr_i - 1][curr_j].state)
@@ -196,10 +192,6 @@ void AI::find_path(int eval_type)
 	int curr_j_temp;
 	while (grid[curr_i][curr_j].state != 'i')
 	{
-		//std::cout << curr_i;
-		//std::cout << curr_j;
-		//std::cout << ",";
-	
 		if (grid[curr_i][curr_j].state != 'g')
 		{
 			grid[curr_i][curr_j].state = 'o';
@@ -213,14 +205,6 @@ void AI::find_path(int eval_type)
 		curr_j_temp = curr_j;
 		curr_i = grid[curr_i_temp][curr_j_temp].prev_coords[0];
 		curr_j = grid[curr_i_temp][curr_j_temp].prev_coords[1];
-	}
-
-	//Path stored
-	for (int i = 0; i < dimension; i++) {
-		for (int j = 0; j < dimension; j++) {
-			std::cout << grid[i][j].state;
-		}
-		printf("\n");
 	}
 
 	// printf("Number of steps taken: %d\n", path_depth);
@@ -243,12 +227,22 @@ void AI::get_grid(char** arr, int n)
 	 		grid[i][j].state = arr[i][j];
 			grid[i][j].evaluated = false;
 			grid[i][j].visited = false;
-			//std::cout << grid[i][j].state;
 		}
 
 	}
 
 	return;
+}
+
+char** AI::output_states() {
+	char** output = new char*[dimension];
+	for (int i = 0; i < dimension; i++) {
+		output[i] = new char[dimension];
+		for (int j = 0; j < dimension; j++) {
+			output[i][j] = grid[i][j].state;
+		}
+	}
+	return output;
 }
 
 int AI::euclidean_evaluation(int i0, int j0, int i1, int j1)
@@ -294,4 +288,9 @@ bool AI::fringe_contains(std::vector<std::vector<int> > fringe, int node_i, int 
 		}
 	}
 	return false;
+}
+
+int AI::get_path_cost()
+{
+	return path_depth;
 }
