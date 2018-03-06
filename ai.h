@@ -22,24 +22,23 @@
 
 class AI
 {
-	public:
-		void find_path(int eval_type);
+public:
+	void find_path(int eval_type);
+	void get_grid(char** arr, int n);
+private:
+	struct Node { char state; int value; int depth; bool evaluated; bool visited; int prev_coords[2]; };
+	int euclidean_evaluation(int i0, int j0, int i1, int j1);
+	int manhattan_evaluation(int i0, int j0, int i1, int j1);
+	int hueristic_euclidean_evaluation(int i0, int j0, int i1, int j1);
+	int hueristic_manhattan_evaluation(int i0, int j0, int i1, int j1);
+	bool is_pathable(char state);
+	bool fringe_contains(std::vector<std::vector<int> > fringe, int node_i, int node_j);
 
-	private:
-		struct Node {char state; int value; int depth; bool evaluated; bool visited; int prev_coords[2];};
-		void get_grid(std::string file_name);
-		int euclidean_evaluation(int i0, int j0, int i1, int j1);
-		int manhattan_evaluation(int i0, int j0, int i1, int j1);
-		int hueristic_euclidean_evaluation(int i0, int j0, int i1, int j1);
-		int hueristic_manhattan_evaluation(int i0, int j0, int i1, int j1);
-		bool is_pathable(char state);
-		bool fringe_contains(std::vector<std::vector<int> > fringe, int node_i, int node_j);
-
-		//GridReader reader;
-		struct Node** grid;
-		int dimension;
-		int path_depth;
-		std::vector<std::vector<int> > path;
+	//GridReader reader;
+	struct Node** grid;
+	int dimension;
+	int path_depth;
+	std::vector<std::vector<int> > path;
 };
 
 #endif /* AI_H */
