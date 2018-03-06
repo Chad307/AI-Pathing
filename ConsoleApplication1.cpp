@@ -51,12 +51,11 @@ int main(int argc, char **argv)
 			case 3:
 				validInput = true;
 				break;
-				validInput = true;
 			case 4:
+				validInput = true;
 				break;
 			case 5:
 				return 0;
-				break;
 			default:
 				cout << "Please enter an appropriate input";
 				validInput = false;

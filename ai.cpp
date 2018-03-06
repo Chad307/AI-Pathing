@@ -1,3 +1,10 @@
+// Name: Chad Johnson
+// Student ID: 1763718
+// Email: johns428@mail.chapman.edu
+// Course: CPSC 390-01
+// Assignment: Assignment #2
+// Purpose: ai.cpp implements AI.
+
 #include "ai.h"
 
 void AI::find_path(int eval_type)
@@ -20,7 +27,6 @@ void AI::find_path(int eval_type)
 		evaluate = &AI::hueristic_manhattan_evaluation;
 		break;
 	default:
-		//print error and return;
 		break;
 	}
 
@@ -195,11 +201,6 @@ void AI::find_path(int eval_type)
 		if (grid[curr_i][curr_j].state != 'g')
 		{
 			grid[curr_i][curr_j].state = 'o';
-
-			new_coords.push_back(curr_i);
-			new_coords.push_back(curr_j);
-			path.push_back(new_coords);
-			new_coords.clear();
 		}
 		curr_i_temp = curr_i;
 		curr_j_temp = curr_j;
@@ -215,10 +216,9 @@ void AI::find_path(int eval_type)
 
 void AI::get_grid(char** arr, int n)
 {
-	
 	dimension = n;
-
 	grid = new Node*[dimension];
+
 	for (int i = 0; i < dimension; i++)
 	{
 		grid[i] = new Node[dimension];
