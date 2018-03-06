@@ -185,8 +185,9 @@ void AI::find_path(int eval_type)
 		//Increment nodes visited
 		num_nodes_visited++;
 
-		printf("Curr: %d, %d\n", curr_i, curr_j);
-		printf("Prev: %d, %d\n", grid[curr_i][curr_j].prev_coords[0], grid[curr_i][curr_j].prev_coords[1]);
+		// printf("Curr: %d, %d\n", curr_i, curr_j);
+		// printf("Prev: %d, %d\n", grid[curr_i][curr_j].prev_coords[0], grid[curr_i][curr_j].prev_coords[1]);
+		// printf("Curr cost: %d\n", grid[curr_i][curr_j].depth);
 	}
 
 	//Goal found
@@ -222,8 +223,8 @@ void AI::find_path(int eval_type)
 		printf("\n");
 	}
 
-	printf("Number of steps taken: %d\n", path_depth);
-	printf("Number of nodes: %d\n", num_nodes_visited);
+	// printf("Number of steps taken: %d\n", path_depth);
+	// printf("Number of nodes: %lu\n", fringe.size());
 
 	return;
 }
