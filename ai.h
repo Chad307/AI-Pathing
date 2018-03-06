@@ -1,6 +1,9 @@
 // Name: Chad Johnson
 // Student ID: 1763718
 // Email: johns428@mail.chapman.edu
+// Name: Jerome Martin
+// Student ID: 1851031
+// Email: marti368@mail.chapman.edu
 // Course: CPSC 390-01
 // Assignment: Assignment #2
 // Purpose: ai.h declares the AI class, which contains code for finding the 
