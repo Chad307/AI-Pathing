@@ -33,6 +33,8 @@ void AI::find_path(int eval_type)
 	int next_cost = 0;
 	std::vector<std::vector<int> > fringe;
 	std::vector<int> new_coords;
+	int num_nodes_visited = 0;
+	path_depth = 0;
 
 	//Find initial node.
 	for (int i = 0; i < dimension; i++) {
@@ -63,7 +65,7 @@ void AI::find_path(int eval_type)
 		{
 			if (!grid[curr_i - 1][curr_j].evaluated) {
 				grid[curr_i - 1][curr_j].value = (this->*evaluate)(curr_i - 1, curr_j, goal_i, goal_j);
-				grid[curr_i - 1][curr_j].depth = path_depth + 1;
+				grid[curr_i - 1][curr_j].depth = grid[curr_i][curr_j].depth + 1;
 				grid[curr_i - 1][curr_j].evaluated = true;
 			}
 
@@ -85,7 +87,7 @@ void AI::find_path(int eval_type)
 		{
 			if (!grid[curr_i + 1][curr_j].evaluated) {
 				grid[curr_i + 1][curr_j].value = (this->*evaluate)(curr_i + 1, curr_j, goal_i, goal_j);
-				grid[curr_i + 1][curr_j].depth = path_depth + 1;
+				grid[curr_i + 1][curr_j].depth = grid[curr_i][curr_j].depth + 1;
 				grid[curr_i + 1][curr_j].evaluated = true;
 			}
 
@@ -107,7 +109,7 @@ void AI::find_path(int eval_type)
 		{
 			if (!grid[curr_i][curr_j - 1].evaluated) {
 				grid[curr_i][curr_j - 1].value = (this->*evaluate)(curr_i, curr_j - 1, goal_i, goal_j);
-				grid[curr_i][curr_j - 1].depth = path_depth + 1;
+				grid[curr_i][curr_j - 1].depth = grid[curr_i][curr_j].depth + 1;
 				grid[curr_i][curr_j - 1].evaluated = true;
 			}
 
@@ -129,7 +131,7 @@ void AI::find_path(int eval_type)
 		{
 			if (!grid[curr_i][curr_j + 1].evaluated) {
 				grid[curr_i][curr_j + 1].value = (this->*evaluate)(curr_i, curr_j + 1, goal_i, goal_j);
-				grid[curr_i][curr_j + 1].depth = path_depth + 1;
+				grid[curr_i][curr_j + 1].depth = grid[curr_i][curr_j].depth + 1;
 				grid[curr_i][curr_j + 1].evaluated = true;
 			}
 
@@ -170,10 +172,6 @@ void AI::find_path(int eval_type)
 			}
 		}
 
-		//Set next node's prev_coords to curr coords
-		//grid[next_i][next_j].prev_coords[0] = curr_i;
-		//grid[next_i][next_j].prev_coords[1] = curr_j;
-
 		//Set curr node visited to true
 		grid[curr_i][curr_j].visited = true;
 
@@ -183,10 +181,18 @@ void AI::find_path(int eval_type)
 
 		//Set path_depth
 		path_depth = grid[curr_i][curr_j].depth;
+
+		//Increment nodes visited
+		num_nodes_visited++;
+
+		printf("Curr: %d, %d\n", curr_i, curr_j);
+		printf("Prev: %d, %d\n", grid[curr_i][curr_j].prev_coords[0], grid[curr_i][curr_j].prev_coords[1]);
 	}
 
 	//Goal found
 	//Retrace path
+	int curr_i_temp;
+	int curr_j_temp;
 	while (grid[curr_i][curr_j].state != 'i')
 	{
 		//std::cout << curr_i;
@@ -195,21 +201,31 @@ void AI::find_path(int eval_type)
 	
 		if (grid[curr_i][curr_j].state != 'g')
 		{
+			grid[curr_i][curr_j].state = 'o';
+
 			new_coords.push_back(curr_i);
 			new_coords.push_back(curr_j);
 			path.push_back(new_coords);
 			new_coords.clear();
 		}
-		curr_i = grid[curr_i][curr_j].prev_coords[0];
-		curr_j = grid[curr_i][curr_j].prev_coords[1];
+		curr_i_temp = curr_i;
+		curr_j_temp = curr_j;
+		curr_i = grid[curr_i_temp][curr_j_temp].prev_coords[0];
+		curr_j = grid[curr_i_temp][curr_j_temp].prev_coords[1];
 	}
 
 	//Path stored
-	for (int i = 1; i < dimension; i++) {
-		for (int j = 1; j < dimension; j++) {
+	for (int i = 0; i < dimension; i++) {
+		for (int j = 0; j < dimension; j++) {
 			std::cout << grid[i][j].state;
 		}
+		printf("\n");
 	}
+
+	printf("Number of steps taken: %d\n", path_depth);
+	printf("Number of nodes: %d\n", num_nodes_visited);
+
+	return;
 }
 
 void AI::get_grid(char** arr, int n)

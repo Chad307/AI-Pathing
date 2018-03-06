@@ -7,7 +7,7 @@ char** ReadWrite::readFile(std::string filename) {
 
 	getline(infile, line);
 	n = stoi(line);
-	cout << n;
+	cout << n << endl;
 
 	int i = 0;
 
