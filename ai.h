@@ -25,6 +25,7 @@ class AI
 public:
 	void find_path(int eval_type);
 	void get_grid(char** arr, int n);
+	char** output_states();
 private:
 	struct Node { char state; int value; int depth; bool evaluated; bool visited; int prev_coords[2]; };
 	int euclidean_evaluation(int i0, int j0, int i1, int j1);

@@ -7,16 +7,16 @@ void AI::find_path(int eval_type)
 	evaluate = &AI::euclidean_evaluation;
 	switch (eval_type)
 	{
-	case 0:
+	case 1:
 		evaluate = &AI::euclidean_evaluation;
 		break;
-	case 1:
+	case 2:
 		evaluate = &AI::manhattan_evaluation;
 		break;
-	case 2:
+	case 3:
 		evaluate = &AI::hueristic_euclidean_evaluation;
 		break;
-	case 3:
+	case 4:
 		evaluate = &AI::hueristic_manhattan_evaluation;
 		break;
 	default:
@@ -185,8 +185,8 @@ void AI::find_path(int eval_type)
 		//Increment nodes visited
 		num_nodes_visited++;
 
-		printf("Curr: %d, %d\n", curr_i, curr_j);
-		printf("Prev: %d, %d\n", grid[curr_i][curr_j].prev_coords[0], grid[curr_i][curr_j].prev_coords[1]);
+		//printf("Curr: %d, %d\n", curr_i, curr_j);
+		//printf("Prev: %d, %d\n", grid[curr_i][curr_j].prev_coords[0], grid[curr_i][curr_j].prev_coords[1]);
 	}
 
 	//Goal found
@@ -198,7 +198,7 @@ void AI::find_path(int eval_type)
 		//std::cout << curr_i;
 		//std::cout << curr_j;
 		//std::cout << ",";
-	
+
 		if (grid[curr_i][curr_j].state != 'g')
 		{
 			grid[curr_i][curr_j].state = 'o';
@@ -215,12 +215,6 @@ void AI::find_path(int eval_type)
 	}
 
 	//Path stored
-	for (int i = 0; i < dimension; i++) {
-		for (int j = 0; j < dimension; j++) {
-			std::cout << grid[i][j].state;
-		}
-		printf("\n");
-	}
 
 	printf("Number of steps taken: %d\n", path_depth);
 	printf("Number of nodes: %d\n", num_nodes_visited);
@@ -230,16 +224,16 @@ void AI::find_path(int eval_type)
 
 void AI::get_grid(char** arr, int n)
 {
-	
+
 	dimension = n;
 
 	grid = new Node*[dimension];
 	for (int i = 0; i < dimension; i++)
 	{
 		grid[i] = new Node[dimension];
-		for (int j = 0; j < dimension; j++){
-	 		grid[i][j] = *new Node();
-	 		grid[i][j].state = arr[i][j];
+		for (int j = 0; j < dimension; j++) {
+			grid[i][j] = *new Node();
+			grid[i][j].state = arr[i][j];
 			grid[i][j].evaluated = false;
 			grid[i][j].visited = false;
 			//std::cout << grid[i][j].state;
@@ -248,6 +242,16 @@ void AI::get_grid(char** arr, int n)
 	}
 
 	return;
+}
+char** AI::output_states() {
+	char** output = new char*[dimension];
+	for (int i = 0; i < dimension; i++) {
+		output[i] = new char[dimension];
+		for (int j = 0; j < dimension; j++) {
+			output[i][j] = grid[i][j].state;
+		}
+	}
+	return output;
 }
 
 int AI::euclidean_evaluation(int i0, int j0, int i1, int j1)

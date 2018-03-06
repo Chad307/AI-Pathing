@@ -12,6 +12,7 @@ class ReadWrite
 public:
 	char** readFile(std::string filename);
 	int sizeOf();
+	void writeFile(char** arr, int n);
 private:
 	int n;
 };
