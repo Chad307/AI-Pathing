@@ -53,7 +53,7 @@ void ReadWrite::writeFile(char** arr, int n, int p) {
 		printf("\n");
 
 	}
-	outputFile << "PathCost:"<<p<<endl;
+	outputFile << "PathCost:" << p << endl;
 	printf("Path cost: %d\n\n", p);
 	outputFile.close();
 

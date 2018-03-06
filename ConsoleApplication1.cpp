@@ -1,5 +1,16 @@
-// ConsoleApplication1.cpp : Defines the entry point for the console application.
-//
+// Name: Chad Johnson
+// Student ID: 1763718
+// Email: johns428@mail.chapman.edu
+// Name: Jerome Martin
+// Student ID: 1851031
+// Email: marti368@mail.chapman.edu
+// Course: CPSC 390-01
+// Assignment: Assignment #2
+//Purpose: This program takes a maze input from a file as an array, 
+//then navigates its way to the end using four potential navigation funtions.
+//It then outputs its path to a file.
+//The main handles the readwrite class and the ai class.
+
 
 #include <iostream>
 #include <fstream>
@@ -8,11 +19,16 @@
 #include "readwrite.h"
 
 using namespace std;
+
+//Main askes for file as input, then if it is valid, it will ask for a pathing algorithm.
+//The Euclidean evaluation takes the straight line distance to the goal as the value.
+//Manhatten evaluation takes the cardinal distance to the goal as the value.
+//Heuristic versions of the Euclidean and Manhatten algorithms also factor in tree depth
 int main(int argc, char **argv)
 {
 	bool outerLoop = true;
 	string filename;
-	while(outerLoop == true){
+	while (outerLoop == true) {
 		bool loop = true;
 		while (loop == true) {
 			cout << "Enter a filename: ";
@@ -24,12 +40,12 @@ int main(int argc, char **argv)
 			}
 			else {
 				loop = true;
-				cout << "Cannot find file."<<endl;
+				cout << "Cannot find file." << endl;
 			}
 		}
 		loop = true;
 		bool validInput = true;
-		while (loop = true) {
+		while (loop == true) {
 			string selection;
 			int evalType;
 			cout << "1) Euclidean Evaluation" << endl;
@@ -62,6 +78,7 @@ int main(int argc, char **argv)
 				break;
 			}
 			if (validInput == true) {
+				loop = false;
 				ReadWrite rwClass;
 				AI aiClass;
 				char** a = rwClass.readFile(filename);
