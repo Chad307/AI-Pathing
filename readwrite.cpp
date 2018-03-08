@@ -14,6 +14,7 @@ char** ReadWrite::readFile(std::string filename) {
 	char** a = new char*[n];
 	for (int i = 0; i < n; ++i) {
 		a[i] = new char[n];
+
 	}
 	while (getline(infile, line))
 	{
@@ -37,9 +38,29 @@ char** ReadWrite::readFile(std::string filename) {
 int ReadWrite::sizeOf() {
 	return n;
 }
-void ReadWrite::writeFile(char** arr, int n, int p) {
+void ReadWrite::writeFile(int evalType, char** arr, int n, int p) {
 
-	ofstream outputFile("outputFile.txt");
+	ofstream outputFile;
+	if (evalType == 1){
+		outputFile.open("outputFile.txt");
+		outputFile << "Eucledian Evaluation" << endl;
+		printf("Euclidean Evaluation\n");
+	}
+	else {
+		outputFile.open("outputFile.txt", std::ios_base::app);
+		if (evalType == 2) {
+			outputFile << "Manhattan Evaluation" << endl;
+			printf("Manhattan Evaluation\n");
+		}
+		else if (evalType == 3) {
+			outputFile << "Heuristic Euclidean Evaluation" << endl;
+			printf("Heuristic Euclidean Evaluation\n");
+		}
+		else if (evalType == 4) {
+			outputFile << "Heusistic Manhattan Evaluation" << endl;
+			printf("Heuristic Manhattan Evaluation\n");
+		}
+	}
 	char** output_grid = new char*[n];
 	for (int i = 0; i < n; i++)
 	{
